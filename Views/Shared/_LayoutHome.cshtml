@@ -1,0 +1,194 @@
+﻿@using EAD_TermProject.Models
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.js"></script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script>
+        $(document).ready(function () {
+            $("body").scrollTop(330);
+        });
+        $(document).ready(function () {
+            $('#search').click(function () {
+                if ($("#searchbox").val() != "") {
+                    var query = $("#searchbox").val();
+                    if (isNaN(parseFloat(query))) {
+                        alert("query is a string");
+
+
+                        location.href = '@Url.Action("search", "Home")?str=' + $("#searchbox").val();
+                    }
+
+                    else {
+                        alert("query is numeric");
+
+                        location.href = '@Url.Action("searchbyprice", "Home")?str=' + $("#searchbox").val();
+                    }
+                }
+                else
+                    alert("this option is for users. View 'ViewItems' or 'Categories' to find items id ");
+            });
+
+        });
+
+        $(document).ready(function () {
+            $('#search1').click(function () {
+                if ($("#searchbox").val() != "") {
+                    var query = $("#searchbox").val();
+                    if (isNaN(parseFloat(query))) {
+                        alert("query is a string");
+
+
+                        location.href = '@Url.Action("search", "Home")?str=' + $("#searchbox").val();
+                    }
+
+                    else {
+                        alert("query is numeric");
+
+                        location.href = '@Url.Action("searchbyprice", "Home")?str=' + $("#searchbox").val();
+                    }
+                }
+                else
+                    alert("Please write search query");
+            });
+
+        });
+
+
+    </script>
+
+</head>
+<body style="margin-left:100px;margin-right:100px">
+    <div class="jumbotron">
+        <div class="row">
+  <div class="col-sm-4"><img src="~/Images/buy.jpg"></div>
+  <div class="col-sm-4"> 
+      <div class="container text-center">
+   <h1>Rehmat Online Shopping</h1>
+  </div></div>
+            <div class="col-sm-4" align="right">
+                <img src="~/Images/buy.jpg"></div>
+            </div>
+</div>
+
+</div>
+    </div>
+
+
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+         <a class="navbar-brand" href="#"><img src="~/Images/shop.jpg" height="30" width="150"></a>
+      
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="/Admin/Index">Home</a></li>
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">ViewItems<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           @foreach (var data in Session["categorylist"] as List<EAD_TermProject.Models.category>)
+           {
+               
+                <li><a href="/Admin/Food/@data.categoryid">@data.categoryname</a></li>
+           }
+          
+        </ul>
+      </li>
+      
+   <li class="dropdown">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown">Contact<span class="caret"></span></a>
+         <ul class="dropdown-menu">
+		 <li><a href="/Admin/Email">Email</a></li>
+		 <li><a href="/Admin/phone">phone</a></li>
+		 <li><a href="/Admin/facebook">Facebook</a></li>
+		 <li><a href="/Admin/twitter">twitter</a></li>
+		 <li><a href="/Admin/address">Address</a></li>
+		 </ul>
+ 
+ </ul>
+    <ul class="nav navbar-nav navbar-right">
+        @if (Session["user"]==null)
+        {
+      <li><a href="/Account/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+      <li><a href="/Account/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        }
+        else
+        {
+            customer c = (customer)Session["user"];
+            <li class="dropdown"><a class="dropdown-toggle"  data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span><big>Account</big><span class="caret"></span></a>
+                <ul class="dropdown-menu navbar-right">
+                    @if(c.username=="admin" && c.password=="admin")
+                 {
+                        <li><a href="#"><span class="glyphicon glyphicon-user"></span><font color="green" size="4"> &nbsp;&nbsp;Hello! Admin</font></a></li>
+                 }
+                 else
+                 {
+                        <li><a href="#"><span ></span><font color="green" size="4"> &nbsp;&nbsp;Hello! User</font></a></li>    
+                 }
+
+                    <li><a href="#"><span class="glyphicon glyphicon-star-empty"></span><b> &nbsp;&nbsp;Name:</b> @c.name </a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-star-empty"></span><b> &nbsp;&nbsp;Username:</b> @c.username </a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-envelope"></span><b> &nbsp;&nbsp;Email:</b> @c.email </a></li><hr class="divider" />
+                    <li><a href="/Account/logout"><span class="glyphicon glyphicon-log-out"></span><b><I> &nbsp;&nbsp; LogOut</I></b> </a></li>
+                      <li><a href="/Account/setting"><span class="glyphicon glyphicon-wrench"></span><b><I> &nbsp;&nbsp; Setting</I></b></a></li>
+                </ul>
+                }
+            </li>
+        }
+            
+      
+        </ul>          
+     
+  </div>
+</nav>
+     <hr class="divider">
+    
+ <div class="container-fluid">
+     <div class="row">
+  <div class="col-sm-4"> <div class="container">
+          <div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="margin-left:100px;width:200px;height:40px">Categories
+    <span class="caret"></span></button>
+                  <ul class="dropdown-menu" style="margin-left:100px">
+                  @foreach (var data in Session["categorylist"] as List<EAD_TermProject.Models.category>)
+           {
+               
+                <li><a href="/Admin/Food/@data.categoryid">@data.categoryname</a></li>
+           }
+                   </ul>
+  </div>
+  </div></div>
+         <div class="container">
+ <div class="col-sm-8" align="left">
+      
+    <div class="btn-group">
+      <button  style="width:150px;height:39px" id="search" class="btn btn-primary">Search</button>
+      <input type="text" name="searchbox" id="searchbox" disabled placeholder="I am Looking for" style="width:300px;height:39px"/ required="required" maxlength="20" autocomplete="on">
+      <a id="search1" class="glyphicon glyphicon-search img-rounded"></a>
+       @{
+        if(Session["added"]!=null)
+        {int cnt=(int)Session["added"];
+            <h3>@cnt items Added to Cart</h3><a href="#"><button class="btn">get Bill</button></a> }
+        
+                }
+</div>
+        </div>
+</div>
+    <hr class="divider">
+ 
+    @RenderBody()
+<footer>
+<div class="navbar navbar-inverse">
+<div class="container">
+</div>
+</div>
+    </footer>
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

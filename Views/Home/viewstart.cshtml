@@ -1,0 +1,74 @@
+﻿@model IEnumerable<EAD_TermProject.Models.item>
+@using EAD_TermProject.Models
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.js"></script>
+</head>
+<body style="background-color:ghostwhite">
+
+  <div class="container">    
+  <div class="row">
+       @{
+            var m=Session["categorylist"] as IEnumerable<EAD_TermProject.Models.category>;
+            }
+    @foreach(var data in Model)
+    {
+        string name = "";
+        foreach(var ctg in m)
+        {
+            if (ctg.categoryid == data.categoryid)
+            {
+                name = ctg.categoryname;
+                break;
+            }
+        }
+      <div class="col-sm-4">
+      <div class="panel panel-success">
+        <div class="panel-heading">@(name)</div>
+       <div class="panel-body"><img src="~/Images/@(name)/@(data.itemimage)" class="img-responsive" style="width:100%;height:250px" alt="Image"></div>
+        <div class="panel-footer"><font color="red"><b>Rs. @data.itemprice</b>
+            @if(Session["user"]!=null)
+            {
+            <a href="/Home/order/@data.itemid"><button class="btn btn-info" style="width:130px;height:40px">Buy</button></a>
+                  <ul>
+                    <li><b>Brand-Name</b>:@data.brandname</li>
+                    <li><b>Name</b>:@data.itemname</li>
+                    <li><b>price</b>:@data.itemprice</li>
+                    <li><b>Size</b>:@data.itemsize</li>
+                </ul>
+            }
+            else
+            {
+                <a href="/Account/login"><button class="btn btn-info" style="width:130px;height:40px">First login</button></a>
+            }
+       </div>
+      </div>
+    </div>
+    }
+        </div>
+        </div>
+
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
+    
+
